@@ -5,7 +5,7 @@ A Matlab code for the implementation of the synchronization method introduced by
 
 
 # How to cite this Work ?
-If you use this package for your own work, please consider citing it with [this piece of BibTeX](PERvsSPEC.bib):
+If you use this package for your own work, please consider citing it with [this piece of BibTeX](DATAAIDED_SSB.bib):
 
 ```bibtex
 @INPROCEEDINGS{9232344,
