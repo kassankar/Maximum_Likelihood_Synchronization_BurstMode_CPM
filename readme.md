@@ -39,5 +39,5 @@ If you use this package for your own work, please consider citing it with [this 
     * select the required SNR values from `Snr`.
     * select the required number of iterations `itt` (default is `10**5`).
 ## License
-© 2020-2021 Karim Kasan
+© 2020-2021 Karim Kassan
 
