@@ -20,7 +20,7 @@ If you use this package for your own work, please consider citing it with [this 
   }
 ```
 # How to run the code ?
-1. Make sure that you have a compatibel version of matlab (this code was tested on matlab 2018b)
+1. Make sure that you have a compatibel version of python (this code was tested on python 3.8)
 2. Download (clone) the files from the repository.
 3. Open the file called _MLS_BurstMode_CPM.py_
 4. Select the section called __Variables ini__
