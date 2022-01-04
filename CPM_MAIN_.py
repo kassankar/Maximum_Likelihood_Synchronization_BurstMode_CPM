@@ -6,12 +6,12 @@ class MAIN:
         special = self.special
         np      = self.np 
         return 0.5*special.erfc(x/np.sqrt(2))
-    def CREATECPMPULSE(self,pulse,pulse_length,pulse_width,os,img,plot_line_style):
+    def CREATECPMPULSE(self,pulse,pulse_length,pulse_width,OS,img,plot_line_style):
         np        = self.np 
         integrate = self.integrate
         plt       = self.plt
         qfunc     = self.qfunc
-        Ts =  1/os
+        Ts =  1/OS
         w  = pulse_width
         if pulse==1 :      
             t          = np.arange(-pulse_length/2,pulse_length/2+Ts,Ts) 
@@ -62,16 +62,16 @@ class MAIN:
         else:
             fig=0
         return g_t, q_t, fig
-    def Data_Modulation(self,pulse,g_t,modulation_index,pulse_length,os,bits,img, plot_line_style):
+    def Data_Modulation(self,pulse,g_t,modulation_index,pulse_length,OS,bits,img, plot_line_style):
         signal    = self.signal
         np        = self.np
         integrate = self.integrate
         plt       = self.plt
         h         = modulation_index
         L         = pulse_length
-        Ts        = 1/os
+        Ts        = 1/OS
 
-        bits_s = np.hstack((bits[:,None], np.zeros((np.size(bits,0),os-1)))).flatten() # same as matlab upsample (insert zeros (nb:os-1) after each element of the array)
+        bits_s = np.hstack((bits[:,None], np.zeros((np.size(bits,0),OS-1)))).flatten() # same as matlab upsample (insert zeros (nb:OS-1) after each element of the array)
         t_seq  = np.arange(0,np.size(bits,0)+Ts,Ts)
         s      = np.convolve(bits_s,g_t)
         s      = s[0:np.size(t_seq,0)]
@@ -88,7 +88,7 @@ class MAIN:
             plt.ylabel('Phase \phi(t;\alpha)')
             plt.grid(True)
             plt.subplot(1,2,2)
-            # plt.plot(t_seq[0:-1-(np.size(bits,0)-L)*os],Mod_s)
+            # plt.plot(t_seq[0:-1-(np.size(bits,0)-L)*OS],Mod_s)
             plt.plot(t_seq,Mod_s, linestyle = plot_line_style)
             plt.xlabel('time t/(T_s)')
             plt.ylabel('Modulated Signal s(t,\alpha)')
@@ -97,7 +97,7 @@ class MAIN:
         else:
             fig=0
         return Ph, Mod_s, t_seq, fig
-    def awgn(self,s,SNRdB,os=1):
+    def awgn(self,s,SNRdB,OS=1):
         """
         AWGN channel
         Add AWGN noise to input signal. The function adds AWGN noise vector to signal 's' to generate a resulting signal vector 'r' of specified SNR in dB. It also
@@ -105,16 +105,16 @@ class MAIN:
         Parameters:
             s : input/transmitted signal vector
             SNRdB : desired signal to noise ratio (expressed in dB) for the received signal
-            os : oversampling factor (applicable for waveform simulation) default L = 1.
+            OS : oversampling factor (applicable for waveform simulation) default L = 1.
         Returns:
             r : received signal vector (r=s+n)
         """
         np = self.np
         gamma = 10**(SNRdB/10) #SNR to linear scale
         if s.ndim==1:# if s is single dimensional vector
-            P=os*np.sum(np.abs(s)**2)/len(s) #Actual power in the vector
+            P=OS*np.sum(np.abs(s)**2)/len(s) #Actual power in the vector
         else: # multi-dimensional signals like MFSK
-            P=os*np.sum(np.sum(abs(s)**2))/len(s) # if s is a matrix [MxN]
+            P=OS*np.sum(np.sum(abs(s)**2))/len(s) # if s is a matrix [MxN]
         N0=P/gamma # Find the noise spectral density
         if np.isrealobj(s):# check if input is real/complex object type
             n = np.sqrt(N0/2)*np.random.standard_normal(s.shape) # computed noise
