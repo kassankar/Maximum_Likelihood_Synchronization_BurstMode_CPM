@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from CPM_MAIN_ import MAIN
 import random
 # %matplotlib widget
-# %%EE
 # Variables ini
 Main          = MAIN()  # Call class MAIN
 pulse         = 2;      # 1 -> lorentzian pulse
