@@ -2,10 +2,10 @@
 import numpy as np
 from scipy import integrate, special
 import matplotlib.pyplot as plt
-from CPM_MAIN import MAIN
+from CPM_MAIN_ import MAIN
 import random
 # %matplotlib widget
-# %%
+# %%EE
 # Variables ini
 Main          = MAIN()  # Call class MAIN
 pulse         = 2;      # 1 -> lorentzian pulse
@@ -15,14 +15,14 @@ pulse         = 2;      # 1 -> lorentzian pulse
 L             = 4;      # Pulse length
                         # 1  -> Full response
                         # >1 -> Partial response
-os            = 2**1;   # Over sampling frequency
-Ts            = 1/os;   # Sampling Time (not symbole time, symbole time is always one)
+OS            = 2**1;   # Over sampling frequency
+Ts            = 1/OS;   # Sampling Time (not symbole time, symbole time is always one)
 M             = 2**1;   # M_ary symbols used (2 -> Binary)
 h             = 0.5;    # Modulation index
 width         = 0.8;    # This variable is used for Lorentzian Pulse only. (Not be used for pulse > 1)
 # %%
 # frequency pulse
-g_t, q_t, fig = Main.CREATECPMPULSE(pulse,L,width,os,1,'-') # Function return the CPM pulse and phase.
+g_t, q_t, fig = Main.CREATECPMPULSE(pulse,L,width,OS,1,'-') # Function return the CPM pulse and phase.
                                                             # g_t = g(t) is the CPM pulse shape.
                                                             # q_t -> is the phase, integral of g_t.
                                                             # fig = figure of g_t
@@ -39,7 +39,7 @@ if antipodal !=True:
     Tr           = np.hstack((np.zeros((1,R0)),np.ones((1,R1)),np.zeros((1,R2)))).flatten()
 else:
     Tr           = np.hstack((-(M-1)*np.ones((1,int(L0/4))),(M-1)*np.ones((1,int(L0/2))),-(M-1)*np.ones((1,int(L0/4))))).flatten()
-Ph, Mod_s, t_seq, fig   = Main.Data_Modulation(pulse,g_t,h,L,os,Tr,2,'-')
+Ph, Mod_s, t_seq, fig   = Main.Data_Modulation(pulse,g_t,h,L,OS,Tr,2,'-')
 
 # %%
 # Add Tl
@@ -52,12 +52,12 @@ else:
     else:
         Tl            = 0
     Tr1                  = np.hstack((-(M-1)*np.ones((1,int(L0/4))),(M-1)*np.ones((1,int(L0/2))),-(M-1)*np.ones((1,int(L0/4))), -(M-1)*np.ones((1,Tl)))).flatten()
-Ph, Mod_s, t_seq1, fig   = Main.Data_Modulation(pulse,g_t,h,L,os,Tr1,0,'--')
+Ph, Mod_s, t_seq1, fig   = Main.Data_Modulation(pulse,g_t,h,L,OS,Tr1,0,'--')
 
 # Remove lag Tl
 if L>1 :
-    Mod_s_lag = Mod_s[Tl*os+1:]
-    Ph_lag    = Ph[Tl*os+1:]
+    Mod_s_lag = Mod_s[Tl*OS+1:]
+    Ph_lag    = Ph[Tl*OS+1:]
     t_seq     = t_seq[0:np.size(Mod_s_lag,0)]
 else:
     Mod_s_lag = Mod_s
@@ -79,8 +79,8 @@ npev     = np.zeros((1,np.size(Snr))).flatten()
 
 for I in range(0,np.size(Snr)):
     for J in range(0,itt): 
-        tau_min  = -os/2
-        tau_max  = os/2-1
+        tau_min  = -OS/2
+        tau_max  = OS/2-1
         k        = random.randint(tau_min, tau_max) # Delay tau (time offset)
         if k>0:
             r    =  np.hstack((np.zeros((1,k)).flatten(),Mod_s_lag)).flatten()
@@ -89,8 +89,8 @@ for I in range(0,np.size(Snr)):
             r    =  np.hstack((Mod_s_lag, np.zeros((1,abs(k))).flatten())).flatten()
             r    = r[abs(k):]
         # Add freq offset
-        fd_min = -os/2
-        fd_max = os/2-0.1
+        fd_min = -OS/2
+        fd_max = OS/2-0.1
         fd     = random.uniform(fd_min, fd_max) #  fd (frequency offset)
         r      = r*np.exp(1j*2*np.pi*fd*t_seq);
 
@@ -102,25 +102,25 @@ for I in range(0,np.size(Snr)):
 
         # Add Noise
         snr = Snr[I]
-        r   = Main.awgn(r,snr,os)
+        r   = Main.awgn(r,snr,OS)
 
         # Compute Lambda1 and Lambda2
         if L==1:
-            r1 = np.zeros((1,L0*os+1),dtype=complex).flatten()
-            r2 = np.zeros((1,L0*os+1),dtype=complex).flatten()
+            r1 = np.zeros((1,L0*OS+1),dtype=complex).flatten()
+            r2 = np.zeros((1,L0*OS+1),dtype=complex).flatten()
         else:
-            r1 = np.zeros((1,L0*os),dtype=complex).flatten()
-            r2 = np.zeros((1,L0*os),dtype=complex).flatten()
+            r1 = np.zeros((1,L0*OS),dtype=complex).flatten()
+            r2 = np.zeros((1,L0*OS),dtype=complex).flatten()
 
-        r1[0:int(L0*os/4)]                  = r[0:int(L0*os/4)]
-        r1[int(3*L0*os/4):int(L0*os)]       = r[int(3*L0*os/4):int(L0*os)]*np.exp(-1j*(M-1)*np.pi*h*L0)
-        r2[int(L0*os/4):int(3*L0*os/4)]     = r[int(L0*os/4):int(3*L0*os/4)]*np.exp(1j*(M-1)*np.pi*h*L0/2)
+        r1[0:int(L0*OS/4)]                  = r[0:int(L0*OS/4)]
+        r1[int(3*L0*OS/4):int(L0*OS)]       = r[int(3*L0*OS/4):int(L0*OS)]*np.exp(-1j*(M-1)*np.pi*h*L0)
+        r2[int(L0*OS/4):int(3*L0*OS/4)]     = r[int(L0*OS/4):int(3*L0*OS/4)]*np.exp(1j*(M-1)*np.pi*h*L0/2)
 
         r1p = r1*np.exp(1j*(M-1)*np.pi*h*t_seq)
         r2p = r2*np.exp(-1j*(M-1)*np.pi*h*t_seq)
 
         kf         = 2**1
-        Nf         = kf*os*L0
+        Nf         = kf*OS*L0
         r1p_fft    = np.fft.fftshift(np.fft.fft(r1p,int(Nf)))
         r2p_fft    = np.fft.fftshift(np.fft.fft(r2p,int(Nf)))
         f          = np.fft.fftshift(np.fft.fftfreq(Nf,Ts))
@@ -143,7 +143,7 @@ for I in range(0,np.size(Snr)):
             lambda1       = np.sum(r1p*np.exp(-1j*2*np.pi*(fd_est_int)*t_seq))*Ts
             lambda2       = np.sum(r2p*np.exp(-1j*2*np.pi*(fd_est_int)*t_seq))*Ts
             eps_est       = np.angle(lambda1*np.conj(lambda2))/(2*(M-1)*np.pi*h)
-            te[J]         = (eps_est - k/os)**2
+            te[J]         = (eps_est - k/OS)**2
             theta_est     = np.angle(np.exp(-1j*(M-1)*np.pi*h*eps_est)*lambda1 +
                                     np.exp(1j*(M-1)*np.pi*h*eps_est)*lambda2)
             theta_est     = (theta_est) % (2 * np.pi)
