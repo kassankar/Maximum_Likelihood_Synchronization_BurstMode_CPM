@@ -8,16 +8,15 @@ A Matlab code for the implementation of the synchronization method introduced by
 If you use this package for your own work, please consider citing it with [this piece of BibTeX](DATAAIDED_SSB.bib):
 
 ```bibtex
-@INPROCEEDINGS{9232344,
-  author={Kassan, Karim and Farès, Haïfa and Glattli, D. Christian and Louët, Yves},
-  booktitle={2020 XXXIIIrd General Assembly and Scientific Symposium of the International Union of Radio Science}, 
-  title={Preamble Design for Data-Aided Synchronization of Single Side Band Continuous Phase Modulation}, 
-  year={2020},
+@INPROCEEDINGS{9615878,
+  author={Kassan, Karim and Farès, Haïfa and Louët, Yves and Glattli, Christian},
+  booktitle={2021 International Symposium on Networks, Computers and Communications (ISNCC)}, 
+  title={Training Sequence Design For Burst Mode Single Side Band CPM Synchronization}, 
+  year={2021},
   volume={},
   number={},
-  pages={1-4},
-  doi={10.23919/URSIGASS49373.2020.9232344}
-  }
+  pages={1-5},
+  doi={10.1109/ISNCC52172.2021.9615878}}
 ```
 # How to run the code ?
 1. Make sure that you have a compatibel version of python (this code was tested on python 3.8)
